@@ -33,14 +33,12 @@ class BabyLinkCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch data from API endpoint."""
         session = async_get_clientsession(self.hass)
-        headers = {}
-        if self.token:
-            headers["Authorization"] = f"Bearer {self.token}"
 
-        url = f"{self.api_url.rstrip('/')}?baby_id={self.baby_id}"
+        base_url = self.api_url.rstrip("/")
+        url = f"{base_url}/events/last/{self.baby_id}"
 
         try:
-            async with session.get(url, headers=headers, timeout=10) as resp:
+            async with session.get(url, timeout=10) as resp:
                 if resp.status != 200:
                     raise UpdateFailed(f"Error communicating with API: status {resp.status}")
                 return await resp.json()
