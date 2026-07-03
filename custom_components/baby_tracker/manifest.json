@@ -1,11 +1,11 @@
 {
-  "domain": "baby_tracker",
-  "name": "Baby Tracker",
-  "codeowners": ["@tu_usuario"],
+  "domain": "baby_link",
+  "name": "Baby Link",
+  "codeowners": ["@mg-diego"],
   "config_flow": true,
-  "documentation": "https://github.com/tu_usuario/baby_tracker",
+  "documentation": "https://github.com/mg-diego/baby-link-ha",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/tu_usuario/baby_tracker/issues",
+  "issue_tracker": "https://github.com/mg-diego/baby-link-ha",
   "requirements": [],
   "version": "1.0.0"
 }

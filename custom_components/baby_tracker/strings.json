@@ -2,18 +2,20 @@
   "config": {
     "step": {
       "user": {
-        "title": "Configure Baby Tracker",
-        "description": "Introduce los datos de conexión con la API de seguimiento de tu bebé.",
+        "description": "Enter the API connection details to track your baby's events and status.",
         "data": {
-          "api_url": "URL del Endpoint de la API",
-          "baby_id": "ID único del Bebé",
-          "api_token": "Token de Autenticación (Opcional)"
+          "api_url": "API Server URL",
+          "baby_id": "Unique Baby ID"
         }
       }
     },
     "error": {
-      "cannot_connect": "No se ha podido conectar con el servidor API. Verifica la URL y que esté en línea.",
-      "unknown": "Ha ocurrido un error inesperado al procesar la solicitud."
+      "cannot_connect": "Failed to connect to the API server. Check the URL and ensure the service is online.",
+      "invalid_auth": "Invalid authentication credentials or unauthorized Baby ID.",
+      "unknown": "An unexpected error occurred while processing the request."
+    },
+    "abort": {
+      "already_configured": "This Baby ID is already configured in Home Assistant."
     }
   }
 }
