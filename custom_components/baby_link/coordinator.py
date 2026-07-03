@@ -35,12 +35,18 @@ class BabyLinkCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         session = async_get_clientsession(self.hass)
 
         base_url = self.api_url.rstrip("/")
-        url = f"{base_url}/events/last/{self.baby_id}"
+        url = f"{base_url}/homeassistant/{self.baby_id}/summary" 
 
         try:
             async with session.get(url, timeout=10) as resp:
                 if resp.status != 200:
                     raise UpdateFailed(f"Error communicating with API: status {resp.status}")
-                return await resp.json()
+                
+                json_response = await resp.json()
+                
+                if isinstance(json_response, dict) and "data" in json_response:
+                    return json_response["data"]
+                    
+                return json_response
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
