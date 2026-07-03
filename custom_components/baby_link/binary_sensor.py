@@ -1,4 +1,4 @@
-"""Binary sensor platform for Baby Tracker."""
+"""Binary sensor platform for Baby Link."""
 from __future__ import annotations
 
 from homeassistant.components.binary_sensor import (

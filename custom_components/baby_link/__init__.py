@@ -1,4 +1,4 @@
-"""The Baby Tracker integration."""
+"""The Baby Link integration."""
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
@@ -12,7 +12,7 @@ PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up Baby Tracker from a config entry."""
+    """Set up Baby Link from a config entry."""
     coordinator = BabyTrackerCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
 

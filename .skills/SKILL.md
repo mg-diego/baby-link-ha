@@ -1,4 +1,4 @@
-# Home Assistant Custom Component: Baby Tracker Integration
+# Home Assistant Custom Component: Baby Link Integration
 
 ## 🎯 Objetivo del Proyecto
 Desarrollar una integración personalizada (Custom Component) nativa para Home Assistant que conecte con la API de seguimiento del bebé (basada en Supabase/REST) para exponer el estado actual del bebé, últimas actividades y métricas del día en tiempo real dentro del ecosistema smart home.
@@ -8,7 +8,7 @@ La integración debe seguir estrictamente los estándares modernos de desarrollo
 
 ```text
 custom_components/
-  baby_tracker/
+  baby_link/
     __init__.py           # Configuración del entry y registro del Coordinator
     manifest.json         # Metadatos de la integración (domain, version, codeowners)
     config_flow.py        # Interfaz UI para que el usuario añada la API Key/URL en HA

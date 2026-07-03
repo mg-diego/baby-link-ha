@@ -1,4 +1,4 @@
-"""Config flow for Baby Tracker integration."""
+"""Config flow for Baby Link integration."""
 from __future__ import annotations
 
 import asyncio
@@ -47,15 +47,15 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
             result = await response.json()
     except (asyncio.TimeoutError, aiohttp.ClientError) as err:
-        _LOGGER.error("Failed to connect to Baby Tracker API: %s", err)
+        _LOGGER.error("Failed to connect to Baby Link API: %s", err)
         raise CannotConnect from err
 
     # Ensure the name falls back to a default if the API doesn't return one
-    return {"title": result.get("name", "Baby Tracker")}
+    return {"title": result.get("name", "Baby Link")}
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Baby Tracker."""
+    """Handle a config flow for Baby Link."""
 
     VERSION = 1
 

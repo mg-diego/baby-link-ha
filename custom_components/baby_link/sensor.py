@@ -1,4 +1,4 @@
-"""Sensor platform for Baby Tracker."""
+"""Sensor platform for Baby Link."""
 from __future__ import annotations
 
 from datetime import datetime
@@ -37,7 +37,7 @@ async def async_setup_entry(
 
 
 class BabyBaseSensor(CoordinatorEntity[BabyTrackerCoordinator], SensorEntity):
-    """Base class for Baby Tracker sensors."""
+    """Base class for Baby Link sensors."""
 
     def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry, key: str) -> None:
         """Initialize base sensor."""

@@ -1,4 +1,4 @@
-"""DataUpdateCoordinator for Baby Tracker."""
+"""DataUpdateCoordinator for Baby Link."""
 from __future__ import annotations
 
 import logging
@@ -16,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class BabyTrackerCoordinator(DataUpdateCoordinator[dict[str, Any]]):
-    """Class to manage fetching Baby Tracker data."""
+    """Class to manage fetching Baby Link data."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:
         """Initialize."""
