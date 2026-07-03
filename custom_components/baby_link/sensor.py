@@ -11,6 +11,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -25,7 +26,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up sensor platform."""
     coordinator: BabyLinkCoordinator = hass.data[DOMAIN][entry.entry_id]
-    
+
     sensors = [
         BabyTodayFeedsSensor(coordinator, entry),
         BabyTodayDiapersSensor(coordinator, entry),
@@ -39,12 +40,31 @@ async def async_setup_entry(
 class BabyBaseSensor(CoordinatorEntity[BabyLinkCoordinator], SensorEntity):
     """Base class for Baby Link sensors."""
 
-    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry, key: str) -> None:
+    _attr_has_entity_name = True
+
+    def __init__(
+        self, coordinator: BabyLinkCoordinator, entry: ConfigEntry, key: str
+    ) -> None:
         """Initialize base sensor."""
         super().__init__(coordinator)
-        baby_name = coordinator.data.get("name", "Baby")
-        self._attr_unique_id = f"{entry.data['baby_id']}_{key}"
-        self.baby_name = baby_name
+        
+        baby_id = entry.data["baby_id"]
+        baby_name = (
+            coordinator.data.get("name", "Baby") if coordinator.data else "Baby"
+        )
+
+        self._attr_unique_id = f"{baby_id}_{key}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, baby_id)},
+            name=baby_name,
+            manufacturer="Baby Link",
+            model="Baby Link",
+        )
+
+    @property
+    def available(self) -> bool:
+        """Return True if entity is available."""
+        return super().available and self.coordinator.data is not None
 
 
 class BabyTodayFeedsSensor(BabyBaseSensor):
@@ -55,10 +75,12 @@ class BabyTodayFeedsSensor(BabyBaseSensor):
 
     def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_feeds")
-        self._attr_name = f"{self.baby_name} Today Feeds"
+        self._attr_name = "Today Feeds"
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
+        if not self.coordinator.data:
+            return None
         summary = self.coordinator.data.get("today_summary", {})
         return summary.get("total_feeds", 0)
 
@@ -67,14 +89,16 @@ class BabyTodayDiapersSensor(BabyBaseSensor):
     """Sensor for total diapers today."""
 
     _attr_icon = "mdi:human-baby-changing-table"
-    _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _attr_state_class = SensorStateClass.TOTAL_INCREAS = SensorStateClass.TOTAL_INCREASING
 
     def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_diapers")
-        self._attr_name = f"{self.baby_name} Today Diapers"
+        self._attr_name = "Today Diapers"
 
     @property
-    def native_value(self) -> int:
+    def native_value(self) -> int | None:
+        if not self.coordinator.data:
+            return None
         summary = self.coordinator.data.get("today_summary", {})
         return summary.get("total_diapers", 0)
 
@@ -88,10 +112,12 @@ class BabyTodaySleepHoursSensor(BabyBaseSensor):
 
     def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_sleep_hours")
-        self._attr_name = f"{self.baby_name} Today Sleep Hours"
+        self._attr_name = "Today Sleep Hours"
 
     @property
-    def native_value(self) -> float:
+    def native_value(self) -> float | None:
+        if not self.coordinator.data:
+            return None
         summary = self.coordinator.data.get("today_summary", {})
         mins = summary.get("total_sleep_mins", 0)
         return round(mins / 60, 1)
@@ -105,10 +131,12 @@ class BabyLastFeedSensor(BabyBaseSensor):
 
     def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "last_feed_time")
-        self._attr_name = f"{self.baby_name} Last Feed Time"
+        self._attr_name = "Last Feed Time"
 
     @property
     def native_value(self) -> datetime | None:
+        if not self.coordinator.data:
+            return None
         events = self.coordinator.data.get("last_events", {})
         time_str = events.get("last_feed", {}).get("time")
         if not time_str:
@@ -116,7 +144,9 @@ class BabyLastFeedSensor(BabyBaseSensor):
         return datetime.fromisoformat(time_str.replace("Z", "+00:00"))
 
     @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        if not self.coordinator.data:
+            return None
         feed = self.coordinator.data.get("last_events", {}).get("last_feed", {})
         return {
             "type": feed.get("type", "unknown"),
@@ -132,10 +162,12 @@ class BabyLastDiaperSensor(BabyBaseSensor):
 
     def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "last_diaper_time")
-        self._attr_name = f"{self.baby_name} Last Diaper Time"
+        self._attr_name = "Last Diaper Time"
 
     @property
     def native_value(self) -> datetime | None:
+        if not self.coordinator.data:
+            return None
         events = self.coordinator.data.get("last_events", {})
         time_str = events.get("last_diaper", {}).get("time")
         if not time_str:
@@ -143,7 +175,9 @@ class BabyLastDiaperSensor(BabyBaseSensor):
         return datetime.fromisoformat(time_str.replace("Z", "+00:00"))
 
     @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        if not self.coordinator.data:
+            return None
         diaper = self.coordinator.data.get("last_events", {}).get("last_diaper", {})
         return {
             "condition": diaper.get("condition", "unknown"),
