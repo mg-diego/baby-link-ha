@@ -10,7 +10,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import CONF_API_TOKEN, CONF_API_URL, CONF_BABY_ID, DOMAIN, SCAN_INTERVAL
+from .const import CONF_API_URL, CONF_BABY_ID, DOMAIN, SCAN_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,7 +29,6 @@ class BabyLinkCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         self.entry = entry
         self.api_url = entry.data[CONF_API_URL]
         self.baby_id = entry.data[CONF_BABY_ID]
-        self.token = entry.data.get(CONF_API_TOKEN)
 
     async def _async_update_data(self) -> dict[str, Any]:
         """Fetch data from API endpoint."""
