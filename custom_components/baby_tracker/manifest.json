@@ -1,0 +1,11 @@
+{
+  "domain": "baby_tracker",
+  "name": "Baby Tracker",
+  "codeowners": ["@tu_usuario"],
+  "config_flow": true,
+  "documentation": "https://github.com/tu_usuario/baby_tracker",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/tu_usuario/baby_tracker/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

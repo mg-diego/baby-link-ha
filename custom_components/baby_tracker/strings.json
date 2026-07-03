@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Baby Tracker",
+        "description": "Introduce los datos de conexión con la API de seguimiento de tu bebé.",
+        "data": {
+          "api_url": "URL del Endpoint de la API",
+          "baby_id": "ID único del Bebé",
+          "api_token": "Token de Autenticación (Opcional)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se ha podido conectar con el servidor API. Verifica la URL y que esté en línea.",
+      "unknown": "Ha ocurrido un error inesperado al procesar la solicitud."
+    }
+  }
+}
