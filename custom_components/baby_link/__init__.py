@@ -6,14 +6,14 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
-from .coordinator import BabyTrackerCoordinator
+from .coordinator import BabyLinkCoordinator
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Baby Link from a config entry."""
-    coordinator = BabyTrackerCoordinator(hass, entry)
+    coordinator = BabyLinkCoordinator(hass, entry)
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator

@@ -15,7 +15,7 @@ from .const import CONF_API_TOKEN, CONF_API_URL, CONF_BABY_ID, DOMAIN, SCAN_INTE
 _LOGGER = logging.getLogger(__name__)
 
 
-class BabyTrackerCoordinator(DataUpdateCoordinator[dict[str, Any]]):
+class BabyLinkCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     """Class to manage fetching Baby Link data."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry) -> None:

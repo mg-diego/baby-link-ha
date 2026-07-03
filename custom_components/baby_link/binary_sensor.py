@@ -11,7 +11,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .coordinator import BabyTrackerCoordinator
+from .coordinator import BabyLinkCoordinator
 
 
 async def async_setup_entry(
@@ -20,17 +20,17 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up binary sensor platform."""
-    coordinator: BabyTrackerCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: BabyLinkCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities([BabySleepingBinarySensor(coordinator, entry)])
 
 
-class BabySleepingBinarySensor(CoordinatorEntity[BabyTrackerCoordinator], BinarySensorEntity):
+class BabySleepingBinarySensor(CoordinatorEntity[BabyLinkCoordinator], BinarySensorEntity):
     """Representation of a Baby Sleeping binary sensor."""
 
     _attr_device_class = BinarySensorDeviceClass.OCCUPANCY
     _attr_icon = "mdi:sleep"
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         """Initialize the binary sensor."""
         super().__init__(coordinator)
         self._attr_unique_id = f"{entry.data['baby_id']}_is_sleeping"

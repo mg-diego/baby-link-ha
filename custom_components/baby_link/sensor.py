@@ -15,7 +15,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
-from .coordinator import BabyTrackerCoordinator
+from .coordinator import BabyLinkCoordinator
 
 
 async def async_setup_entry(
@@ -24,7 +24,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up sensor platform."""
-    coordinator: BabyTrackerCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator: BabyLinkCoordinator = hass.data[DOMAIN][entry.entry_id]
     
     sensors = [
         BabyTodayFeedsSensor(coordinator, entry),
@@ -36,10 +36,10 @@ async def async_setup_entry(
     async_add_entities(sensors)
 
 
-class BabyBaseSensor(CoordinatorEntity[BabyTrackerCoordinator], SensorEntity):
+class BabyBaseSensor(CoordinatorEntity[BabyLinkCoordinator], SensorEntity):
     """Base class for Baby Link sensors."""
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry, key: str) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry, key: str) -> None:
         """Initialize base sensor."""
         super().__init__(coordinator)
         baby_name = coordinator.data.get("name", "Baby")
@@ -53,7 +53,7 @@ class BabyTodayFeedsSensor(BabyBaseSensor):
     _attr_icon = "mdi:baby-bottle"
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_feeds")
         self._attr_name = f"{self.baby_name} Today Feeds"
 
@@ -69,7 +69,7 @@ class BabyTodayDiapersSensor(BabyBaseSensor):
     _attr_icon = "mdi:human-baby-changing-table"
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_diapers")
         self._attr_name = f"{self.baby_name} Today Diapers"
 
@@ -86,7 +86,7 @@ class BabyTodaySleepHoursSensor(BabyBaseSensor):
     _attr_native_unit_of_measurement = "h"
     _attr_state_class = SensorStateClass.TOTAL
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "today_sleep_hours")
         self._attr_name = f"{self.baby_name} Today Sleep Hours"
 
@@ -103,7 +103,7 @@ class BabyLastFeedSensor(BabyBaseSensor):
     _attr_device_class = SensorDeviceClass.TIMESTAMP
     _attr_icon = "mdi:clock-outline"
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "last_feed_time")
         self._attr_name = f"{self.baby_name} Last Feed Time"
 
@@ -130,7 +130,7 @@ class BabyLastDiaperSensor(BabyBaseSensor):
     _attr_device_class = SensorDeviceClass.TIMESTAMP
     _attr_icon = "mdi:clock-outline"
 
-    def __init__(self, coordinator: BabyTrackerCoordinator, entry: ConfigEntry) -> None:
+    def __init__(self, coordinator: BabyLinkCoordinator, entry: ConfigEntry) -> None:
         super().__init__(coordinator, entry, "last_diaper_time")
         self._attr_name = f"{self.baby_name} Last Diaper Time"
 
